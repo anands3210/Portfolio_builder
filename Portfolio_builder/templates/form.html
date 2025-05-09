@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website Builder - Anand Srivastava</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient-start: #6A11CB;
+            --primary-gradient-end: #2575FC; 
+            --secondary-color: #FFDE59; 
+            --accent-color: #FF6B6B; 
+            
+            --bg-main: #E0E7FF; 
+            --bg-main-gradient: linear-gradient(135deg, #E0E7FF 0%, #C1D6FF 100%);
+            --bg-card: #FFFFFF;
+            
+            --text-dark: #1A202C; 
+            --text-medium: #4A5568; 
+            --text-light: #718096;
+            
+            --border-color: #CBD5E0; 
+            --success-color: #48BB78; 
+            --danger-color: #F56565; 
+            
+            --shadow-soft: 0 5px 15px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 25px rgba(74, 100, 150, 0.12);
+            --shadow-interactive: 0 10px 30px rgba(74, 100, 150, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: var(--bg-main-gradient);
+            color: var(--text-dark);
+            line-height: 1.7;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 950px;
+            margin: 20px auto;
+        }
+
+        .form-wrapper {
+            background-color: var(--bg-card);
+            padding: 40px 50px;
+            border-radius: 16px; 
+            box-shadow: var(--shadow-medium);
+            animation: fadeInForm 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            margin-bottom: 40px;
+            border-top: 5px solid;
+            border-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end)) 1;
+        }
+
+        @keyframes fadeInForm {
+            from { opacity: 0; transform: translateY(25px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+         
+            margin-bottom: 35px;
+            font-size: 2.8em; 
+            font-weight: 700;
+        }
+
+        h3.section-heading {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-gradient-start);
+            margin-top: 35px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(to right, var(--primary-gradient-start), var(--secondary-color)) 1;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-medium);
+            font-size: 1em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            margin-top: 5px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px; 
+            font-size: 1em;
+            color: var(--text-dark);
+            background-color: #F9FAFB; 
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        textarea:hover,
+        select:hover {
+             border-color: var(--primary-gradient-end);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-gradient-start);
+            box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.15); 
+            outline: none;
+            transform: scale(1.01); 
+        }
+        
+        textarea { resize: vertical; min-height: 120px; }
+        input[type="file"] {
+            margin-top: 10px;
+            padding: 12px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #F9FAFB;
+            transition: border-color 0.3s, background-color 0.3s, transform 0.2s ease;
+        }
+        input[type="file"]:hover {
+            border-color: var(--primary-gradient-end);
+            background-color: #EFF6FF; 
+            transform: scale(1.02);
+        }
+
+        .item-group-container { padding: 5px 0; }
+        .item-group {
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color: var(--bg-card);
+            position: relative;
+            box-shadow: var(--shadow-soft);
+            animation: slideInItem 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .item-group:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+        }
+        @keyframes slideInItem {
+            from { opacity: 0; transform: translateX(-20px) scale(0.98); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        .add-btn {
+            display: inline-flex; 
+            align-items: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-image: linear-gradient(to right, var(--secondary-color) 0%, #FFC371 100%); 
+            color: var(--text-dark);
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            font-size: 0.95em;
+            box-shadow: var(--shadow-soft);
+        }
+        .add-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 15px rgba(255, 222, 89, 0.4); 
+        }
+        
+        
+        .remove-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            font-size: 0.85em;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease, transform 0.2s ease;
+        }
+        .item-group:hover .remove-btn { opacity: 1; } 
+        .remove-btn:hover {
+            background-color: var(--danger-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .optional-section-toggle {
+            margin-top: 35px;
+            padding: 20px;
+            background-color: #EFF6FF; 
+            border-radius: 10px;
+            border: 1px solid #BEE3F8; 
+        }
+        .optional-section-toggle h4 {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--primary-gradient-start);
+        }
+        .optional-section-toggle label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 25px;
+            font-weight: 500; 
+            cursor: pointer;
+            color: var(--text-medium);
+            transition: color 0.3s ease;
+        }
+        .optional-section-toggle label:hover { color: var(--primary-gradient-end); }
+        .optional-section-toggle input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--primary-gradient-end);
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .form-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            margin-top: 40px;
+            padding: 16px 30px;
+            background-image: linear-gradient(to right, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 50%, var(--primary-gradient-start) 100%);
+            background-size: 200% auto;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+            box-shadow: 0 5px 20px rgba(106, 17, 203, 0.3); 
+            letter-spacing: 0.5px;
+        }
+        button[type="submit"]:hover {
+            background-position: right center; 
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 8px 25px rgba(37, 117, 252, 0.4);
+        }
+        button[type="submit"]:active {
+            transform: translateY(-2px) scale(0.99);
+        }
+
+        
+        .preview-wrapper {
+            margin-top: 50px;
+            padding: 35px;
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow-medium);
+        }
+        .preview-wrapper h2 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            color: var(--primary-gradient-start);
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        #preview-iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: #F9FAFB; 
+        }
+
+        .signature {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+        .signature a {
+            color: var(--primary-gradient-end);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .signature a:hover {
+            color: var(--primary-gradient-start);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="form-wrapper">
+            <h1>Craft Your Digital Masterpiece</h1> 
+            <form id="portfolioForm" action="/generate" method="post" enctype="multipart/form-data">
+               
+                <h3 class="section-heading">About You</h3>
+                <label for="name">Your Full Name:</label>
+                <input type="text" name="name" id="name" placeholder="e.g., Anand Srivastava" required>
+
+                <label for="about">Your Story (A brief, compelling introduction):</label>
+                <textarea name="about" id="about" rows="4" placeholder="Tell us a bit about your passion and skills..." required></textarea>
+
+                <label for="profile_pic">Your Best Profile Picture:</label>
+                <input type="file" name="profile_pic" id="profile_pic" accept="image/*">
+
+                <div class="form-columns">
+                    <div>
+                        <label for="contact_email">Primary Email Address:</label>
+                        <input type="email" name="contact_email" id="contact_email" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label for="contact_phone">Phone Number (Optional):</label>
+                        <input type="text" name="contact_phone" id="contact_phone" placeholder="+1 (555) 123-4567">
+                    </div>
+                </div>
+
+                
+                <h3 class="section-heading">Educational Journey</h3>
+                <div id="education-entries" class="item-group-container">
+                    
+                </div>
+                <button type="button" class="add-btn" onclick="addEducationEntry()">+ Add Education</button>
+
+                
+                <h3 class="section-heading">Professional Experience</h3>
+                <div id="experience-entries" class="item-group-container">
+                    
+                </div>
+                <button type="button" class="add-btn" onclick="addExperienceEntry()">+ Add Experience</button>
+
+             
+                <h3 class="section-heading">Showcase Your Projects</h3>
+                <div id="project-entries" class="item-group-container">
+                    
+                </div>
+                <button type="button" class="add-btn" onclick="addProjectEntry()">+ Add Project</button>
+
+                
+                <h3 class="section-heading">Your Superpowers (Skills)</h3>
+                <label for="skills">List your skills (comma separated):</label>
+                <input type="text" name="skills" id="skills" placeholder="e.g., Web Development, UI/UX Design, Project Management">
+
+                
+                <div class="optional-section-toggle">
+                    <h4>Portfolio Content Control:</h4>
+                    <label><input type="checkbox" name="include_education" checked> Education</label>
+                    <label><input type="checkbox" name="include_experience" checked> Experience</label>
+                    <label><input type="checkbox" name="include_projects" checked> Projects</label>
+                    <label><input type="checkbox" name="include_skills" checked> Skills</label>
+                </div>
+
+                <label for="template" style="margin-top:30px;">Select Your Portfolio Theme:</label>
+                <select name="template" id="template">
+                    {% for t in templates %}
+                        <option value="{{ t }}">{{ t.replace('_', ' ') | title }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">✨ Generate My Awesome Portfolio!</button>
+            </form>
+        </div>
+
+       
+        <div id="preview-section" class="preview-wrapper">
+            <h2>Live Preview Arena</h2>
+            <iframe id="preview-iframe"></iframe>
+        </div>
+    </div>
+
+     <footer class="signature">
+        <p>Developed with ❤️ by <a href="https://www.linkedin.com/in/anand-kumar-srivastava/" target="_blank" rel="noopener noreferrer">Anand Srivastava</a></p>
+    </footer>
+
+    <script>
+       
+        let educationCount = 0;
+        let experienceCount = 0;
+        let projectCount = 0;
+
+        function addEducationEntry() {
+            educationCount++;
+            const entryHtml = `
+                <div class="item-group" id="edu-entry-${educationCount}">
+                    <button type="button" class="remove-btn" onclick="removeEntry('edu-entry-${educationCount}')">Remove</button>
+                    <label for="edu_institution_${educationCount}">Institution/School:</label>
+                    <input type="text" name="edu_institution_${educationCount}" id="edu_institution_${educationCount}" placeholder="e.g., University of Excellence" required>
+                    <label for="edu_degree_${educationCount}">Degree/Certificate:</label>
+                    <input type="text" name="edu_degree_${educationCount}" id="edu_degree_${educationCount}" placeholder="e.g., B.Sc. in Computer Science" required>
+                    <label for="edu_period_${educationCount}">Period (e.g., 2018 - 2022):</label>
+                    <input type="text" name="edu_period_${educationCount}" id="edu_period_${educationCount}" placeholder="e.g., Aug 2018 - May 2022">
+                    <label for="edu_description_${educationCount}">Key Achievements/Notes (Optional):</label>
+                    <textarea name="edu_description_${educationCount}" id="edu_description_${educationCount}" rows="2" placeholder="e.g., Graduated with Honors, Dean's List..."></textarea>
+                </div>`;
+            document.getElementById('education-entries').insertAdjacentHTML('beforeend', entryHtml);
+            if (typeof updatePreview === 'function') updatePreview();
+        }
+
+        function addExperienceEntry() {
+            experienceCount++;
+            const entryHtml = `
+                <div class="item-group" id="exp-entry-${experienceCount}">
+                    <button type="button" class="remove-btn" onclick="removeEntry('exp-entry-${experienceCount}')">Remove</button>
+                    <label for="exp_company_${experienceCount}">Company/Organization:</label>
+                    <input type="text" name="exp_company_${experienceCount}" id="exp_company_${experienceCount}" placeholder="e.g., Tech Solutions Inc." required>
+                    <label for="exp_role_${experienceCount}">Role/Title:</label>
+                    <input type="text" name="exp_role_${experienceCount}" id="exp_role_${experienceCount}" placeholder="e.g., Software Engineer" required>
+                    <label for="exp_period_${experienceCount}">Period (e.g., Jan 2020 - Present):</label>
+                    <input type="text" name="exp_period_${experienceCount}" id="exp_period_${experienceCount}" placeholder="e.g., June 2022 - Current">
+                    <label for="exp_description_${experienceCount}">Key Responsibilities/Achievements:</label>
+                    <textarea name="exp_description_${experienceCount}" id="exp_description_${experienceCount}" rows="3" placeholder="Describe your impact and contributions..." required></textarea>
+                </div>`;
+            document.getElementById('experience-entries').insertAdjacentHTML('beforeend', entryHtml);
+            if (typeof updatePreview === 'function') updatePreview();
+        }
+
+        function addProjectEntry() {
+            projectCount++;
+            const entryHtml = `
+                <div class="item-group" id="proj-entry-${projectCount}">
+                    <button type="button" class="remove-btn" onclick="removeEntry('proj-entry-${projectCount}')">Remove</button>
+                    <label for="proj_title_${projectCount}">Project Title:</label>
+                    <input type="text" name="proj_title_${projectCount}" id="proj_title_${projectCount}" placeholder="e.g., Personal Portfolio Builder" required>
+                    <label for="proj_description_${projectCount}">Brief Description:</label>
+                    <textarea name="proj_description_${projectCount}" id="proj_description_${projectCount}" rows="3" placeholder="What problem does it solve? What does it do?" required></textarea>
+                    <label for="proj_link_${projectCount}">Project Link (GitHub, Live Demo - Optional):</label>
+                    <input type="text" name="proj_link_${projectCount}" id="proj_link_${projectCount}" placeholder="https://github.com/yourusername/project">
+                    <label for="proj_technologies_${projectCount}">Technologies Used (comma-separated, Optional):</label>
+                    <input type="text" name="proj_technologies_${projectCount}" id="proj_technologies_${projectCount}" placeholder="e.g., Python, Flask, JavaScript, HTML, CSS">
+                </div>`;
+            document.getElementById('project-entries').insertAdjacentHTML('beforeend', entryHtml);
+            if (typeof updatePreview === 'function') updatePreview();
+        }
+
+        function removeEntry(entryId) {
+            const entry = document.getElementById(entryId);
+            if (entry) {
+                entry.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.4s ease'; // Added max-height for collapse
+                entry.style.opacity = '0';
+                entry.style.transform = 'scale(0.95) translateX(-10px)';
+                entry.style.maxHeight = '0px'; 
+                entry.style.paddingTop = '0'; 
+                entry.style.paddingBottom = '0';
+                entry.style.marginTop = '0';
+                entry.style.borderWidth = '0';
+
+
+                setTimeout(() => {
+                    entry.remove();
+                    if (typeof updatePreview === 'function') updatePreview();
+                }, 400);
+            }
+        }
+       
+
+
+        
+        const form = document.getElementById('portfolioForm');
+        const previewFrame = document.getElementById('preview-iframe');
+        let profilePicDataUrl = null; 
+
+        function getFormDataForPreview() {
+            const formData = new FormData(form);
+            const data = {};
+            
+            ['name', 'about', 'contact_email', 'contact_phone', 'template', 'skills'].forEach(key => {
+                data[key] = formData.get(key);
+            });
+
+            data['include_education'] = formData.has('include_education');
+            data['include_experience'] = formData.has('include_experience');
+            data['include_projects'] = formData.has('include_projects');
+            data['include_skills'] = formData.has('include_skills');
+
+            function parseEntriesFromDOM(prefix, fields) { 
+                const entries = [];
+                let i = 1;
+                while(true){
+                    const firstFieldElement = document.getElementById(`${prefix}_${fields[0]}_${i}`);
+                    if (!firstFieldElement) break; 
+
+                    let entry = {};
+                    let hasData = false;
+                    fields.forEach(field => {
+                        const element = document.getElementById(`${prefix}_${field}_${i}`);
+                        const val = element ? element.value : "";
+                        entry[field] = val;
+                        if (val) hasData = true;
+                    });
+                    if (hasData) {
+                       entries.push(entry);
+                    }
+                    i++;
+                }
+                return entries;
+            }
+            
+            data['education_entries'] = parseEntriesFromDOM('edu', ['institution', 'degree', 'period', 'description']);
+            data['experience_entries'] = parseEntriesFromDOM('exp', ['company', 'role', 'period', 'description']);
+            data['project_entries'] = parseEntriesFromDOM('proj', ['title', 'description', 'link', 'technologies']);
+
+            if (profilePicDataUrl) {
+                 data['profile_pic'] = profilePicDataUrl; 
+            } else if (document.getElementById('profile_pic').files.length > 0) {
+                data['profile_pic'] = document.getElementById('profile_pic').files[0].name;
+            } else {
+                data['profile_pic'] = null;
+            }
+            return data;
+        }
+
+        let previewTimeout;
+        async function updatePreview() {
+            clearTimeout(previewTimeout);
+            previewTimeout = setTimeout(async () => {
+                const dataForPreview = getFormDataForPreview();
+                
+                if (profilePicDataUrl) { 
+                    dataForPreview.profile_pic = profilePicDataUrl;
+                } else {
+                    const picFile = document.getElementById('profile_pic').files[0];
+                    if (picFile) {
+                         try {
+                            dataForPreview.profile_pic = await readFileAsDataURL(picFile);
+                         } catch (e) {
+                            console.error("Error reading file for preview:", e);
+                            dataForPreview.profile_pic = picFile.name; 
+                         }
+                    }
+                }
+
+                try {
+                    const response = await fetch('/preview', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(dataForPreview),
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const result = await response.json();
+
+                    if (result.html) {
+                        previewFrame.contentWindow.document.open();
+                        previewFrame.contentWindow.document.write(result.html);
+                        previewFrame.contentWindow.document.close();
+                    } else if (result.error) {
+                        console.error("Preview error:", result.error);
+                        previewFrame.contentWindow.document.body.innerHTML = `<p style='padding:20px; text-align:center; color:var(--danger-color);'>Error generating preview: ${result.error}</p>`;
+                    }
+                } catch (error) {
+                    console.error('Could not fetch preview:', error);
+                    try { 
+                        if (!previewFrame.contentWindow.document.body) {
+                             previewFrame.contentWindow.document.open();
+                             previewFrame.contentWindow.document.write('<body></body>');
+                             previewFrame.contentWindow.document.close();
+                        }
+                        previewFrame.contentWindow.document.body.innerHTML = `<p style='padding:20px; text-align:center; color:var(--danger-color);'>Could not load preview. Server might be down or an error occurred.</p>`;
+                    } catch (iframeError) {
+                        console.error("Error writing to iframe:", iframeError);
+                    }
+                }
+            }, 350);
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (error) => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        form.addEventListener('input', (event) => {
+            if (event.target.type !== 'file' && event.target.tagName !== 'BUTTON') {
+                updatePreview();
+            }
+        });
+        form.addEventListener('change', async (event) => {
+            if (event.target.id === 'profile_pic' && event.target.files.length > 0) {
+                const file = event.target.files[0];
+                try {
+                    profilePicDataUrl = await readFileAsDataURL(file);
+                } catch(e) {
+                    console.error("Error creating data URL for profile pic:", e);
+                    profilePicDataUrl = null; 
+                }
+            }
+            updatePreview(); 
+        });
+        
+       
+    </script>
+</body>
+</html>

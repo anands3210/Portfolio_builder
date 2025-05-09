@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} | Modern Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-accent: #6A11CB; 
+            --secondary-accent: #2575FC; 
+            --bg-light: #FFFFFF;
+            --bg-off-white: #F8F9FA;
+            --text-dark: #212529;
+            --text-medium: #495057;
+            --text-light: #6C757D;
+            --border-subtle: #E9ECEF;
+            --shadow-soft: 0 8px 25px rgba(0, 0, 0, 0.07);
+            --shadow-medium: 0 12px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+       
+        nav.main-nav {
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            background-color: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari */
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        nav.main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav.main-nav .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        nav.main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+        nav.main-nav ul a {
+            text-decoration: none;
+            color: var(--text-medium);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        nav.main-nav ul a:hover,
+        nav.main-nav ul a.active { 
+            color: var(--primary-accent);
+        }
+        nav.main-nav ul a.active::after { 
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-accent);
+        }
+
+
+     
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent));
+            color: white;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content {
+            animation: fadeInHero 1s ease-out forwards;
+            max-width: 700px;
+        }
+        @keyframes fadeInHero {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 30px;
+            border: 5px solid rgba(255,255,255,0.5);
+            box-shadow: var(--shadow-medium);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hero .profile-pic:hover {
+            transform: scale(1.1);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5em;
+            margin: 0 0 15px 0;
+            line-height: 1.1;
+        }
+        .hero .subtitle {
+            font-size: 1.4em;
+            font-weight: 300;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+        }
+        .hero .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-accent);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .hero .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: var(--bg-off-white);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9em;
+        }
+        .scroll-indicator span {
+            display: block;
+            width: 20px;
+            height: 30px;
+            border: 2px solid rgba(255,255,255,0.7);
+            border-radius: 10px;
+            position: relative;
+            margin: 0 auto 5px auto;
+        }
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            animation: scrollDot 2s infinite 0.5s;
+        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); } 40% { transform: translate(-50%, -10px); } 60% { transform: translate(-50%, -5px); } }
+        @keyframes scrollDot { 0% { transform: translate(-50%, 0); opacity: 1; } 70% { transform: translate(-50%, 12px); opacity: 0; } 100% { transform: translate(-50%, 0); opacity: 0; } }
+
+
+        
+        .content-section {
+            padding: 80px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUpSection 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+        .content-section:nth-child(even) { 
+            background-color: var(--bg-off-white);
+        }
+        @keyframes fadeInUpSection {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content-section:nth-of-type(1) { animation-delay: 0.1s; }
+        .content-section:nth-of-type(2) { animation-delay: 0.2s; }
+        .content-section:nth-of-type(3) { animation-delay: 0.3s; }
+        .content-section:nth-of-type(4) { animation-delay: 0.4s; }
+        .content-section:nth-of-type(5) { animation-delay: 0.5s; }
+
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-accent), var(--secondary-accent));
+        }
+        .section-header p.lead {
+            font-size: 1.1em;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #about .about-content {
+            text-align: center;
+            font-size: 1.15em;
+            color: var(--text-medium);
+            max-width: 750px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .item-card {
+            background-color: var(--bg-light);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+        }
+        .item-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-medium);
+        }
+        .item-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.4em;
+            color: var(--primary-accent);
+            margin-bottom: 8px;
+        }
+        .item-card .meta-info {
+            font-size: 0.95em;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .item-card .description {
+            font-size: 1em;
+            color: var(--text-medium);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .item-card .tech-tags {
+            margin-top: 15px;
+            margin-bottom: 10px; 
+        }
+        .item-card .tech-tags span {
+            background-color: var(--bg-off-white);
+            color: var(--secondary-accent);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+            font-weight: 500;
+        }
+        .item-card .project-link {
+            display: inline-block;
+            margin-top: auto;
+            color: var(--secondary-accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .item-card .project-link:hover {
+            color: var(--primary-accent);
+            text-decoration: underline;
+        }
+
+        #skills .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        #skills .skill-item {
+            background-color: var(--bg-light);
+            color: var(--primary-accent);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+        }
+        #skills .skill-item:hover {
+            transform: translateY(-3px);
+            background-color: var(--primary-accent);
+            color: white;
+        }
+
+        #contact .contact-info { text-align: center; }
+        #contact .contact-info p { font-size: 1.1em; margin-bottom: 25px; color: var(--text-medium); }
+        #contact .contact-info a {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 5px 10px; 
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        }
+        #contact .contact-info a.email-btn { background-color: var(--primary-accent); color: white; }
+        #contact .contact-info a.phone-btn { border: 2px solid var(--secondary-accent); color: var(--secondary-accent); }
+        #contact .contact-info a:hover { transform: translateY(-3px); }
+        #contact .contact-info a.email-btn:hover { background-color: #580ca0; }
+        #contact .contact-info a.phone-btn:hover { background-color: var(--secondary-accent); color: white; }
+
+        .site-footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--text-dark);
+            color: var(--bg-off-white);
+            font-size: 0.9em;
+        }
+        .site-footer p { margin: 0; color: rgba(255,255,255,0.7); }
+
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 3.5em; }
+            .hero .subtitle { font-size: 1.2em; }
+            .section-header h2 { font-size: 2.4em; }
+        }
+        @media (max-width: 768px) {
+            .hero { min-height: 80vh; }
+            .hero h1 { font-size: 2.8em; }
+            .hero .profile-pic { width: 150px; height: 150px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .section-header h2 { font-size: 2.2em; }
+            nav.main-nav .container { justify-content: center; } 
+            nav.main-nav ul { display: none; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.2em; }
+            .hero .subtitle { font-size: 1em; }
+            .hero .profile-pic { width: 120px; height: 120px; }
+            .section-header h2 { font-size: 1.8em; }
+            .item-card { padding: 20px; }
+            #contact .contact-info a { display: block; margin: 10px auto; } 
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <div class="container">
+            <a href="#" class="logo">
+                {% set name_parts = name.split(' ') %}
+                {% if name_parts | length > 1 %}
+                    {{ name_parts[0][0] | upper }}{{ name_parts[-1][0] | upper }}
+                {% elif name %}
+                    {{ name[:2] | upper }}
+                {% else %}
+                    P
+                {% endif %}
+            </a>
+             <ul>
+                <li><a href="#about">About</a></li>
+                {% if include_education and education_entries %}<li><a href="#education">Education</a></li>{% endif %}
+                {% if include_experience and experience_entries %}<li><a href="#experience">Experience</a></li>{% endif %}
+                {% if include_projects and project_entries %}<li><a href="#projects">Projects</a></li>{% endif %}
+                {% if include_skills and skills %}<li><a href="#skills">Skills</a></li>{% endif %}
+                {% if contact_email or contact_phone %}<li><a href="#contact">Contact</a></li>{% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            {% if profile_pic %}
+                <img src="{{ profile_pic }}" alt="{{ name }}'s Profile Picture" class="profile-pic">
+            {% endif %}
+            <h1>{{ name }}</h1>
+            <p class="subtitle">{{ about | truncate(120, True) }}</p>
+            {% if contact_email or contact_phone %}
+                <a href="#contact" class="cta-button">Get In Touch</a>
+            {% endif %}
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+            Scroll Down
+        </div>
+    </header>
+
+    <main>
+        <section id="about" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>A Little About Me</h2>
+                </div>
+                <div class="about-content">
+                    <p>{{ about }}</p>
+                </div>
+            </div>
+        </section>
+
+        {% if include_education and education_entries %}
+        <section id="education" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Education</h2>
+                </div>
+                <div class="card-grid">
+                    {% for edu in education_entries %}
+                    <div class="item-card">
+                        <h3>{{ edu.institution }}</h3>
+                        <p class="meta-info">{{ edu.degree }}{% if edu.period %} • {{ edu.period }}{% endif %}</p>
+                        {% if edu.description %}<p class="description">{{ edu.description }}</p>{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if include_experience and experience_entries %}
+        <section id="experience" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Experience</h2>
+                </div>
+                <div class="card-grid">
+                    {% for exp in experience_entries %}
+                    <div class="item-card">
+                        <h3>{{ exp.company }}</h3>
+                        <p class="meta-info">{{ exp.role }}{% if exp.period %} • {{ exp.period }}{% endif %}</p>
+                        {% if exp.description %}<p class="description">{{ exp.description | safe }}</p>{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if include_skills and skills %}
+        <section id="skills" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>My Skillset</h2>
+                    <p class="lead">A few technologies and tools I'm proficient with.</p>
+                </div>
+                <div class="skills-container">
+                    {% for skill in skills %}
+                    <span class="skill-item">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if include_projects and project_entries %}
+        <section id="projects" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Featured Projects</h2>
+                </div>
+                <div class="card-grid">
+                    {% for project in project_entries %}
+                    <div class="item-card">
+                        <h3>{{ project.title }}</h3>
+                        {% if project.description %}<p class="description">{{ project.description }}</p>{% endif %}
+                        {% if project.technologies %}
+                        <div class="tech-tags">
+                            {% for tech in project.technologies.split(',') %}
+                                <span>{{ tech.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% if project.link %}<a href="{{ project.link }}" target="_blank" class="project-link">View Project →</a>{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if contact_email or contact_phone %}
+        <section id="contact" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Let's Connect</h2>
+                    <p class="lead">Have a project in mind or just want to say hi? Feel free to reach out!</p>
+                </div>
+                <div class="contact-info">
+                    {% if contact_email %}<a href="mailto:{{ contact_email }}" class="email-btn">Send an Email</a>{% endif %}
+                    {% if contact_phone %}<a href="tel:{{ contact_phone }}" class="phone-btn">Call Me</a>{% endif %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+    </main>
+
+  
+    <script>
+        const sections = document.querySelectorAll('main section[id]');
+        const navLinks = document.querySelectorAll('nav.main-nav ul a');
+
+        function onScroll() {
+            let currentId = '';
+        
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const section = sections[i];
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) { 
+                    currentId = section.getAttribute('id');
+                    break; 
+                }
+            }
+            
+        
+            if (!currentId && sections.length > 0) {
+                 currentId = sections[0].getAttribute('id'); 
+            }
+
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        if (sections.length > 0 && navLinks.length > 0) {
+            window.addEventListener('scroll', onScroll);
+            onScroll(); 
+        }
+    </script>
+
+</body>
+</html>
